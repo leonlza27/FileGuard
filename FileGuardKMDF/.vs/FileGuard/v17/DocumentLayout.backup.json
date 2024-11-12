@@ -1,9 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\ccpp_proj\\Drivers\\FileGuardKernel\\FileGuard\\",
+  "WorkspaceRootPath": "D:\\ccpp_proj\\Drivers\\FileGuard\\FileGuardKMDF\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}|FileGuard.vcxproj|D:\\ccpp_proj\\Drivers\\FileGuardKernel\\FileGuard\\Main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}|FileGuard.vcxproj|D:\\ccpp_proj\\Drivers\\FileGuard\\FileGuardKMDF\\FltProc\\FltOperation.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}|FileGuard.vcxproj|solutionrelative:FltProc\\FltOperation.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}|FileGuard.vcxproj|D:\\ccpp_proj\\Drivers\\FileGuard\\FileGuardKMDF\\Main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}|FileGuard.vcxproj|solutionrelative:Main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -14,24 +18,44 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Main.c",
-              "DocumentMoniker": "D:\\ccpp_proj\\Drivers\\FileGuardKernel\\FileGuard\\Main.c",
-              "RelativeDocumentMoniker": "Main.c",
-              "ToolTip": "D:\\ccpp_proj\\Drivers\\FileGuardKernel\\FileGuard\\Main.c",
-              "RelativeToolTip": "Main.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAAAAAAAAAAAA==",
+              "Title": "FltOperation.c",
+              "DocumentMoniker": "D:\\ccpp_proj\\Drivers\\FileGuard\\FileGuardKMDF\\FltProc\\FltOperation.c",
+              "RelativeDocumentMoniker": "FltProc\\FltOperation.c",
+              "ToolTip": "D:\\ccpp_proj\\Drivers\\FileGuard\\FileGuardKMDF\\FltProc\\FltOperation.c",
+              "RelativeToolTip": "FltProc\\FltOperation.c",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAFUAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-03T17:19:56.002Z",
+              "WhenOpened": "2024-11-04T19:05:33.976Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Main.c",
+              "DocumentMoniker": "D:\\ccpp_proj\\Drivers\\FileGuard\\FileGuardKMDF\\Main.c",
+              "RelativeDocumentMoniker": "Main.c",
+              "ToolTip": "D:\\ccpp_proj\\Drivers\\FileGuard\\FileGuardKMDF\\Main.c",
+              "RelativeToolTip": "Main.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-11-03T17:19:56.002Z"
             }
           ]
         }

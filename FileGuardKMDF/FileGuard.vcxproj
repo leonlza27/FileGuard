@@ -111,16 +111,29 @@
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DBG.h" />
-    <ClInclude Include="FltProc\FltOperation.h" />
-    <ClInclude Include="FltProc\Kernel_User_Conn.h" />
-    <ClInclude Include="Main.h" />
+    <ClInclude Include="DBG.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="FltProc\FltOperation.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="FltProc\Kernel_User_Conn.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FltProc\FltOperation.c" />
-    <ClCompile Include="FltProc\Kernel_User_Conn.c" />
-    <ClCompile Include="GuardingObjCtl\Api.cpp" />
-    <ClCompile Include="Main.c" />
+    <ClCompile Include="FltProc\FltOperation.c">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="FltProc\Kernel_User_Conn.c">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="Main.c">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Inf Include="FileGuard.inf">

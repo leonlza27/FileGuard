@@ -42,9 +42,6 @@
     <ClCompile Include="FltProc\Kernel_User_Conn.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GuardingObjCtl\Api.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Inf Include="FileGuard.inf">
