@@ -3,7 +3,7 @@ Signature   = "$WINDOWS NT$"
 Class       = "ActivityMonitor"
 ClassGuid   = {b86dff51-a31e-4bac-b3cf-e8cfe75c9fc2}
 Provider    = %ManufacturerName%
-DriverVer = 11/13/2024,2.19.53.640
+DriverVer = 11/17/2024,2.53.18.50
 CatalogFile = FileGuard.cat
 PnpLockdown = 1
 
@@ -34,7 +34,7 @@ Dependencies="FltMgr"
 ServiceType=2
 StartType=3
 ErrorControl=1
-LoadOrderGroup="miniflt"
+LoadOrderGroup="FileGuard"
 AddReg=FileGuard.AddRegistry
 
 [FileGuard.DriverFiles]

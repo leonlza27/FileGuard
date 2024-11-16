@@ -1,6 +1,10 @@
 #include"FltOperation.h"
 #include"..\DBG.h"
 
+#include"../TgStorage/strtree.h"
+
+extern StrTree* FgTgStorage;
+
 NTSTATUS CovertDevPathToDosPath(PFLT_FILE_NAME_INFORMATION pFileInfo, PDEVICE_OBJECT pDiskObj, UNICODE_STRING* pDestFilePath) {
 	NTSTATUS status = STATUS_SUCCESS;
 	wchar_t pathbuf[5] = { 0 };
@@ -77,8 +81,12 @@ FLT_PREOP_CALLBACK_STATUS PreFltCreate(PFLT_CALLBACK_DATA pData, PCFLT_RELATED_O
 
 	status = CovertDevPathToDosPath(pFileInfo, pDiskObj, &DosFilePath);
 
+	//wcsstr(DosFilePath.Buffer, L"C:\\Users\\leonl\\Desktop\\Recv"
 
-	if (wcsstr(DosFilePath.Buffer, L"C:\\Users\\leonl\\Desktop\\Recv")) {
+	char buf[400];
+	sprintf(buf, "%ls", DosFilePath.Buffer);
+
+	if (HaveStrOrSubStr(FgTgStorage, buf)) {
 		pData->IoStatus.Status = STATUS_UNABLE_TO_DELETE_SECTION;
 		pData->IoStatus.Information = 0;
 		DbgProc(DbgPrint("[SysMiniFlt1] Blocked all operations for directory(file) <%wZ>\n", DosFilePath));

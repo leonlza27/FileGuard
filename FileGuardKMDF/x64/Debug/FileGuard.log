@@ -1,35 +1,20 @@
 ﻿  Building 'FileGuard' with toolset 'WindowsKernelModeDriver10.0' and the 'Universal' target platform.
   Stamping x64\Debug\FileGuard.inf
-  Stamping [Version] section with DriverVer=11/13/2024,2.19.53.640
+  Stamping [Version] section with DriverVer=11/17/2024,2.53.18.50
 D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FileGuard.inf(40-40): warning 1205: Section [FileGuard.DriverFiles] referenced from CopyFiles and DelFiles directive.
   FltOperation.c
-  Kernel_User_Conn.c
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(38,104): warning C4100: “CompletionContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(92,104): warning C4100: “CompletionContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(92,88): warning C4100: “pFltObj”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(92,59): warning C4100: “pData”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(96,149): warning C4100: “Flags”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(96,105): warning C4100: “CompletionContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(96,90): warning C4100: “pFltObj”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(96,61): warning C4100: “pData”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,149): warning C4100: “Flags”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,105): warning C4100: “CompletionContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,90): warning C4100: “pFltObj”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,61): warning C4100: “pData”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(3,124): warning C4100: “ConnectionPortCookie”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(3,102): warning C4100: “SizeofContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(3,82): warning C4100: “pConnContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(3,56): warning C4100: “pServerPortCoockie”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(3,37): warning C4100: “pClientPort”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(8,32): warning C4100: “ConnecionCookie”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(12,142): warning C4100: “ReturnOutputBufferLength”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(12,115): warning C4100: “OutputBufferLength”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(12,95): warning C4100: “OutputBuffer”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\Kernel_User_Conn.c(12,33): warning C4100: “PortCookie”: 未引用的形参
-  Main.c
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\Main.c(34,65): warning C4100: “pRegPath”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\Main.c(79,44): warning C4100: “Flags”: 未引用的形参
-  正在生成代码...
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(42,104): warning C4100: “CompletionContext”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,104): warning C4100: “CompletionContext”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,88): warning C4100: “pFltObj”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,59): warning C4100: “pData”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(104,149): warning C4100: “Flags”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(104,105): warning C4100: “CompletionContext”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(104,90): warning C4100: “pFltObj”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(104,61): warning C4100: “pData”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(108,149): warning C4100: “Flags”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(108,105): warning C4100: “CompletionContext”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(108,90): warning C4100: “pFltObj”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(108,61): warning C4100: “pData”: 未引用的形参
   FileGuard.vcxproj -> D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\x64\Debug\FileGuard.sys
   Done Adding Additional Store
   Successfully signed: D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\x64\Debug\FileGuard.sys

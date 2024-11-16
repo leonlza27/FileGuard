@@ -34,7 +34,7 @@ Dependencies="FltMgr"
 ServiceType=2
 StartType=3
 ErrorControl=1
-LoadOrderGroup="miniflt"
+LoadOrderGroup="FileGuard"
 AddReg=FileGuard.AddRegistry
 
 [FileGuard.DriverFiles]

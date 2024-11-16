@@ -1,6 +1,10 @@
 #include"Main.h"
 #include"DBG.h"
 
+#include"TgStorage/strtree.h"
+
+extern StrTree* FgTgStorage;
+
 FLT_OPERATION_REGISTRATION FltCallbacks[] = {
 	{IRP_MJ_CREATE,0,PreFltCreate,PostFltCreate},
 	{IRP_MJ_DIRECTORY_CONTROL,0,PreFltDirCtl,PostFltDirCtl},
@@ -72,6 +76,11 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 	}
 
 	DbgProc(DbgPrint("[SysMiniFlt1] Load succeed\n"));
+
+#ifdef DBG
+	FgTgStorage = initStrTree();
+	AddString(FgTgStorage, "C:\\Users\\leonl\\Desktop\\Recv");
+#endif
 
 	return status;
 }

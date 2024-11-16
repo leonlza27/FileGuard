@@ -4,7 +4,9 @@
 
 ChrNode *initChrNode(){
   ChrNode *nodeNew = malloc(sizeof(ChrNode));
-  memset(nodeNew->nodenext,0,16);
+  for(int i =0 ;i<16;i++){
+	  nodeNew->nodenext[i] = 0;
+  }
   nodeNew->end=1;
   return nodeNew;
 }
@@ -15,7 +17,7 @@ void AddItem(ChrNode *node,unsigned char item){
 }
 
 int HaveItem(ChrNode *node,unsigned char item){
-  return !(node->nodenext[item]==0);
+  return node->nodenext[item] == 0?0:1;
 }
 
 void ClearAll(ChrNode *node){
@@ -38,13 +40,14 @@ void AddString(StrTree *tree,const char* str){
   tree->cur = tree->head;
   for(size_t i =0;str[i]!=0;i++){
     char mid = (str[i]&0xF0)>>4;
-    AddItem(tree->cur,mid);
+	if(tree->cur->nodenext[mid]==0)
+    	AddItem(tree->cur,mid);
     tree->cur = tree->cur->nodenext[mid];
     mid = str[i]&0xF;
-    AddItem(tree->cur,mid);
+	if(tree->cur->nodenext[mid]==0)
+		AddItem(tree->cur,mid);
     tree->cur = tree->cur->nodenext[mid];
   }
-  tree->cur = tree->head;
 }
 
 int HaveStrOrSubStr(StrTree *tree,const char* str){

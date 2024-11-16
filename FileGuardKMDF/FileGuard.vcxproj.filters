@@ -31,6 +31,9 @@
     <ClInclude Include="FltProc\Kernel_User_Conn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TgStorage\strtree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.c">
@@ -40,6 +43,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FltProc\Kernel_User_Conn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TgStorage\strtree.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TgStorage\op.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
