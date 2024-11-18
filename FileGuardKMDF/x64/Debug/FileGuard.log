@@ -1,26 +1,16 @@
 ﻿  Building 'FileGuard' with toolset 'WindowsKernelModeDriver10.0' and the 'Universal' target platform.
   Stamping x64\Debug\FileGuard.inf
-  Stamping [Version] section with DriverVer=11/17/2024,2.53.18.50
+  Stamping [Version] section with DriverVer=11/19/2024,2.39.4.24
 D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FileGuard.inf(40-40): warning 1205: Section [FileGuard.DriverFiles] referenced from CopyFiles and DelFiles directive.
-  FltOperation.c
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(42,104): warning C4100: “CompletionContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,104): warning C4100: “CompletionContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,88): warning C4100: “pFltObj”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(100,59): warning C4100: “pData”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(104,149): warning C4100: “Flags”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(104,105): warning C4100: “CompletionContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(104,90): warning C4100: “pFltObj”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(104,61): warning C4100: “pData”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(108,149): warning C4100: “Flags”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(108,105): warning C4100: “CompletionContext”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(108,90): warning C4100: “pFltObj”: 未引用的形参
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\FltProc\FltOperation.c(108,61): warning C4100: “pData”: 未引用的形参
+  Main.c
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\Main.c(38,65): warning C4100: “pRegPath”: 未引用的形参
+D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\Main.c(88,44): warning C4100: “Flags”: 未引用的形参
   FileGuard.vcxproj -> D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\x64\Debug\FileGuard.sys
   Done Adding Additional Store
   Successfully signed: D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\x64\Debug\FileGuard.sys
   
   Driver is 'Universal'.
-  ........................
+  ..........................
   Signability test failed.
   
   Errors:

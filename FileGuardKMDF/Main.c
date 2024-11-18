@@ -37,6 +37,7 @@ PFLT_PORT pgServer = 0;
 
 NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 	NTSTATUS status = STATUS_SUCCESS;
+	KdBreakPoint();
 	DbgProc(DbgPrint("[SysMiniFlt1] Filter load\n"));
 
 
@@ -54,7 +55,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 
 	OBJECT_ATTRIBUTES ObjAttr = { 0 };
 	PSECURITY_DESCRIPTOR pSercurity = 0;
-	UNICODE_STRING CommPortName = RTL_CONSTANT_STRING(L"SysMiniFlt1_Port");
+	UNICODE_STRING CommPortName = RTL_CONSTANT_STRING(L"\\FileGuard_Port");
 	status = FltBuildDefaultSecurityDescriptor(&pSercurity, FLT_PORT_ALL_ACCESS);
 	if (!NT_SUCCESS(status)) {
 		DbgProc(DbgPrint("[SysMiniFlt1] Failed to open build security desriptor\n"));
@@ -63,21 +64,20 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 	InitializeObjectAttributes(&ObjAttr, &CommPortName, OBJ_KERNEL_HANDLE | OBJ_CASE_INSENSITIVE, 0, pSercurity);
 
 	status = FltCreateCommunicationPort(pg_Filter, &pgServer, &ObjAttr, 0, FltConnectNotify, FltDisconnectNotify, FltMessageNotify, 1);
+	FltFreeSecurityDescriptor(pSercurity);
 	if (!NT_SUCCESS(status)) {
-		DbgProc(DbgPrint("[SysMiniFlt1] Failed to create comm port\n"));
+		DbgPrint("[SysMiniFlt1] Failed to create comm port\n");
+		FltCloseCommunicationPort(pgServer);
+		FltUnregisterFilter(pg_Filter);
 		return status;
 	}
 
-	if (pg_Filter != 0) {
-		FltUnregisterFilter(pg_Filter);
-	}
-	if (pgServer != 0) {
-		FltCloseCommunicationPort(pgServer);
-	}
+
 
 	DbgProc(DbgPrint("[SysMiniFlt1] Load succeed\n"));
 
 #ifdef DBG
+	
 	FgTgStorage = initStrTree();
 	AddString(FgTgStorage, "C:\\Users\\leonl\\Desktop\\Recv");
 #endif
@@ -87,6 +87,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 
 NTSTATUS FltUnload(FLT_FILTER_UNLOAD_FLAGS Flags) {
 	NTSTATUS status = STATUS_SUCCESS;
+	FltCloseCommunicationPort(pgServer);
 	FltUnregisterFilter(pg_Filter);
 	DbgProc(DbgPrint("[SysMiniFlt1] Filter unload\n"));
 	return status;
