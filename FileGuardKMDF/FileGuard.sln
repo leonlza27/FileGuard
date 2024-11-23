@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileGuard", "FileGuard.vcxproj", "{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileGuardUSR", "..\FileGuardUSR\FileGuardUSR.vcxproj", "{2A3862B1-199B-49C9-B395-ABA7452109C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -25,6 +27,14 @@ Global
 		{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}.Release|x64.ActiveCfg = Release|x64
 		{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}.Release|x64.Build.0 = Release|x64
 		{40BE48F8-A66E-4E1A-AA09-D4C03745BA5A}.Release|x64.Deploy.0 = Release|x64
+		{2A3862B1-199B-49C9-B395-ABA7452109C0}.Debug|ARM64.ActiveCfg = Debug|x64
+		{2A3862B1-199B-49C9-B395-ABA7452109C0}.Debug|ARM64.Build.0 = Debug|x64
+		{2A3862B1-199B-49C9-B395-ABA7452109C0}.Debug|x64.ActiveCfg = Debug|x64
+		{2A3862B1-199B-49C9-B395-ABA7452109C0}.Debug|x64.Build.0 = Debug|x64
+		{2A3862B1-199B-49C9-B395-ABA7452109C0}.Release|ARM64.ActiveCfg = Release|x64
+		{2A3862B1-199B-49C9-B395-ABA7452109C0}.Release|ARM64.Build.0 = Release|x64
+		{2A3862B1-199B-49C9-B395-ABA7452109C0}.Release|x64.ActiveCfg = Release|x64
+		{2A3862B1-199B-49C9-B395-ABA7452109C0}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
