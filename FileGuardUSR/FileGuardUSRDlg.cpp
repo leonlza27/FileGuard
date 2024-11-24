@@ -26,11 +26,14 @@ CFileGuardUSRDlg::CFileGuardUSRDlg(CWnd* pParent /*=nullptr*/)
 void CFileGuardUSRDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_FILELIST, filelist);
 }
 
 BEGIN_MESSAGE_MAP(CFileGuardUSRDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_GETMINMAXINFO()
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 
@@ -46,6 +49,18 @@ BOOL CFileGuardUSRDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+
+	filelist.SetExtendedStyle(filelist.GetExStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	filelist.InsertColumn(0, L"对象名称" ,0,200);
+	filelist.InsertColumn(1, L"对象路径",0,500);
+	filelist.InsertColumn(2, L"状态",0,100);
+
+	CMenu* MainMenu = new CMenu();
+	CMenu* menuOp = new CMenu();
+	MainMenu->LoadMenuW(IDR_MENUMAIN);
+	menuOp = MainMenu->GetSubMenu(0);
+	menuOp->EnableMenuItem(ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	SetMenu(MainMenu);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -86,3 +101,32 @@ HCURSOR CFileGuardUSRDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CFileGuardUSRDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	lpMMI->ptMinTrackSize.x = 800;
+	lpMMI->ptMinTrackSize.y = 600;
+
+	CDialogEx::OnGetMinMaxInfo(lpMMI);
+}
+
+
+void CFileGuardUSRDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point/*point*/) {
+	// TODO: 在此处添加消息处理程序代码
+
+	CMenu menu;
+	menu.LoadMenu(IDR_MENURBTN);
+	CMenu* pMenu;
+	pMenu = menu.GetSubMenu(0);
+
+	pMenu->EnableMenuItem(ID_ADD_RBTN, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->EnableMenuItem(ID_DEL_RBTN, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	pMenu->EnableMenuItem(ID_REFRESH_DRV_TGTREE_RBTN, MF_BYCOMMAND | MF_ENABLED);
+	pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
+	pMenu->Detach();
+	menu.DestroyMenu();
+
+}
