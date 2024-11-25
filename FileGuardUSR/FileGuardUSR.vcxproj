@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AddOperation.h" />
     <ClInclude Include="FileGuardUSR.h" />
     <ClInclude Include="FileGuardUSRDlg.h" />
     <ClInclude Include="framework.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddOperation.cpp" />
     <ClCompile Include="FileGuardUSR.cpp" />
     <ClCompile Include="FileGuardUSRDlg.cpp" />
     <ClCompile Include="pch.cpp">

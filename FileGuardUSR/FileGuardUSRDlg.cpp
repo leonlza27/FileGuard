@@ -8,6 +8,8 @@
 #include "FileGuardUSRDlg.h"
 #include "afxdialogex.h"
 
+#include"AddOperation.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -34,6 +36,9 @@ BEGIN_MESSAGE_MAP(CFileGuardUSRDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_GETMINMAXINFO()
 	ON_WM_CONTEXTMENU()
+	//添加指令
+	ON_COMMAND(ID_ADD, AddObject)
+	ON_COMMAND(ID_ADD_RBTN, AddObject)
 END_MESSAGE_MAP()
 
 
@@ -50,10 +55,10 @@ BOOL CFileGuardUSRDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 
-	filelist.SetExtendedStyle(filelist.GetExStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	filelist.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	filelist.InsertColumn(0, L"对象名称" ,0,200);
 	filelist.InsertColumn(1, L"对象路径",0,500);
-	filelist.InsertColumn(2, L"状态",0,100);
+	filelist.InsertColumn(2, L"防护状态",0,100);
 
 	CMenu* MainMenu = new CMenu();
 	CMenu* menuOp = new CMenu();
@@ -118,7 +123,7 @@ void CFileGuardUSRDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point/*point*/) {
 	// TODO: 在此处添加消息处理程序代码
 
 	CMenu menu;
-	menu.LoadMenu(IDR_MENURBTN);
+	menu.LoadMenuW(IDR_MENURBTN);
 	CMenu* pMenu;
 	pMenu = menu.GetSubMenu(0);
 
@@ -129,4 +134,22 @@ void CFileGuardUSRDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point/*point*/) {
 	pMenu->Detach();
 	menu.DestroyMenu();
 
+}
+
+void CFileGuardUSRDlg::AddObject() {
+	AddOperation opWindow;
+	opWindow.DoModal();
+	if (!opWindow.isCanceled) {
+		filelist.InsertItem(0,L"");
+		filelist.SetItemText(0, 1, opWindow.ObjPathNew);
+		filelist.SetItemText(0, 2, L"已启用");
+		filelist.SetItemText(0, 0, opWindow.ObjNameNew);
+		UpdateWindow();
+	}
+}
+
+
+void CFileGuardUSRDlg::OnOK() {
+	// TODO: 在此添加专用代码和/或调用基类
+	return;
 }

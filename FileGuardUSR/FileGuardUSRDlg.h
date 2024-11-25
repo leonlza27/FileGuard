@@ -34,4 +34,9 @@ public:
 	CListCtrl filelist;
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+
+	//菜单操作
+
+	void AddObject();
+	virtual void OnOK();
 };
