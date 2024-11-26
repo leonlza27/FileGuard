@@ -35,8 +35,14 @@ public:
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 
+	static int CALLBACK LstSortProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+
 	//菜单操作
 
 	void AddObject();
+
+
 	virtual void OnOK();
+	afx_msg void OnColumnclickFilelist(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnRclickFilelist(NMHDR* pNMHDR, LRESULT* pResult);
 };
