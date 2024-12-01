@@ -1,2 +1,0 @@
-D:\ccpp_proj\Drivers\FileGuardKernel\FileGuard\x64\Debug\FileGuard.sys
-D:\ccpp_proj\Drivers\FileGuard\FileGuardKMDF\x64\Debug\FileGuard.sys

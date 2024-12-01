@@ -1,28 +1,18 @@
-Ôªø//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ ÁîüÊàêÁöÑÂåÖÂê´Êñá‰ª∂„ÄÇ
-// ‰æõ FileGuardUSR.rc ‰ΩøÁî®
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ …˙≥…µƒ∞¸∫¨Œƒº˛°£
+// π© FileGuardUSR.rc  π”√
 //
-#define IDD_FILEGUARDUSR_DIALOG         102
-#define IDR_MAINFRAME                   128
-#define IDR_MENUMAIN                    130
-#define IDR_MENURBTN                    131
-#define IDD_ADDOP                       132
-#define IDC_FILELIST                    1000
-#define IDC_ADD_OBJ_NAME                1001
-#define IDC_ADD_OBJ_PATH                1002
-#define IDC_SWINFO                      1003
-#define ID_ADD                          32771
-#define ID_DEL                          32772
-#define ID_REFRESH_DRV_TGTREE           32773
-#define ID_ITEM_ENABLE_OP               32779
+#define IDI_ICON1                       103
+#define IDD_DIALOG1                     104
+#define IDD_MAINWND                     104
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        135
-#define _APS_NEXT_COMMAND_VALUE         32781
-#define _APS_NEXT_CONTROL_VALUE         1004
+#define _APS_NEXT_RESOURCE_VALUE        106
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
