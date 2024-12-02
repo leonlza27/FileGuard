@@ -23,6 +23,7 @@
     <ClCompile Include="WindowBoot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DBG.h" />
     <ClInclude Include="MainWnd\MainWnd.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="WindowBoot.h" />
