@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <commctrl.h>
 #include"../resource.h"
+#include"../AddOp/AddOp.h"
 
 //主窗口消息列表
 INT_PTR CALLBACK MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
@@ -14,3 +15,5 @@ void ReSize();
 
 //初始化
 void InitDlg();
+
+void RbtnMenu(WPARAM wParam, LPARAM lParam);

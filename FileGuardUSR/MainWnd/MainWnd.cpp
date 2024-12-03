@@ -1,34 +1,59 @@
 #include "MainWnd.h"
 #include "../DBG.h"
 
-//对象列表(表头:对象名/路径/状态)
-HWND filelst;
-//对话框主窗口(句柄)
-HWND DlgMainWnd;
-//屏幕缩放比
-double ScreenScale;
+
+static HWND filelst;/*对象列表(表头:对象名 / 路径 / 状态)*/
+static HWND DlgMainWnd;/*对话框主窗口(句柄)*/
+static HINSTANCE DlgHins;/*对话框实例*/
+
+static double ScreenScale;/*屏幕缩放比*/
+static int LstIndex;
+static HMENU FileOperation;/*主菜单文件选项,需中途修改*/
 
 
 INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_INITDIALOG:
 		DlgMainWnd = hDlg;
+		DlgHins = GetModuleHandleW(0);
 		InitDlg();
 		break;
 
 	case WM_CLOSE:
 		EndDialog(hDlg, LOWORD(wParam));
-		return 0;
+		return (INT_PTR)0;
 		break;
 
 	case WM_SIZE:
 		ReSize();
 		break;
 
+	case WM_CONTEXTMENU:
+		RbtnMenu(wParam, lParam);
+		break;
+
 	case WM_NOTIFY:
 		switch (((LPNMHDR)lParam)->code) {
 		case NM_RCLICK:
-			NUL_CASE_BRANCH_RESPONCE
+			if (((LPNMHDR)lParam)->hwndFrom == filelst) {
+				LstIndex = ((LPNMITEMACTIVATE)(LPNMHDR)lParam)->iItem;
+			}
+			break;
+		case NM_CLICK:
+			if (((LPNMHDR)lParam)->hwndFrom == filelst && ((LPNMITEMACTIVATE)(LPNMHDR)lParam)->iItem == -1) {
+				EnableMenuItem(FileOperation, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+			}
+			else {
+				EnableMenuItem(FileOperation, ID_DEL, MF_BYCOMMAND | MF_ENABLED);
+			}
+			break;
+		}
+		break;
+
+	case WM_COMMAND:
+		switch (LOWORD(wParam)) {
+		case ID_ADD:
+			DialogBox(DlgHins, MAKEINTRESOURCE(IDD_ADD), DlgMainWnd, AddOpProc);
 			break;
 		}
 		break;
@@ -38,19 +63,24 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = (long)(400 * ScreenScale);
 		break;
 	}
-	return 0;
+	return (INT_PTR)0;
 }
 
 void InitDlg() {
 	//设置图标
-	HICON ico = LoadIcon(GetModuleHandleA(0), MAKEINTRESOURCEW(IDI_ICON1));
+	HICON ico = LoadIconW(DlgHins, MAKEINTRESOURCEW(IDI_ICON1));
 	SendMessageW(DlgMainWnd, WM_SETICON, ICON_SMALL, (LPARAM)ico);
+
+	//主菜单初始化
+	HMENU RootMainMenu = LoadMenuW(DlgHins, MAKEINTRESOURCE(IDR_MENU_MAIN));
+	FileOperation = GetSubMenu(RootMainMenu, 0);
+	EnableMenuItem(FileOperation, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	SetMenu(DlgMainWnd, RootMainMenu);
 
 	//绑定控件
 	filelst = GetDlgItem(DlgMainWnd, IDC_FILELIST);
 
 	//列表初始化
-
 	SendMessage(filelst, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, ListView_GetExtendedListViewStyle(filelst) | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 
 	LVCOLUMN lvCol = { 0 };
@@ -83,6 +113,20 @@ void InitDlg() {
 	ReleaseDC(hWnd, hDC);
 }
 
+void RbtnMenu(WPARAM wParam, LPARAM lParam) {
+	HMENU RootRbtnMenu = LoadMenuW(DlgHins, MAKEINTRESOURCE(IDR_MENU_RBTN));
+	HMENU OpMenu = GetSubMenu(RootRbtnMenu, 0);
+
+	POINT pnt;
+	GetCursorPos(&pnt);
+
+	//filelst
+	if (LstIndex == -1) EnableMenuItem(OpMenu, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+
+	TrackPopupMenu(OpMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, pnt.x, pnt.y, 0, (HWND)wParam, NULL);
+
+	DestroyMenu(RootRbtnMenu);
+}
 
 void ReSize() {
 	RECT rect;

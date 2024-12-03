@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddOp\AddOp.cpp" />
     <ClCompile Include="MainWnd\MainWnd.cpp" />
     <ClCompile Include="WindowBoot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddOp\AddOp.h" />
     <ClInclude Include="DBG.h" />
     <ClInclude Include="MainWnd\MainWnd.h" />
     <ClInclude Include="resource.h" />
