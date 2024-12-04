@@ -123,7 +123,7 @@ void RbtnMenu(WPARAM wParam, LPARAM lParam) {
 	//filelst
 	if (LstIndex == -1) EnableMenuItem(OpMenu, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
-	TrackPopupMenu(OpMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, pnt.x, pnt.y, 0, (HWND)wParam, NULL);
+	TrackPopupMenu(OpMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, pnt.x, pnt.y, 0, DlgMainWnd, NULL);
 
 	DestroyMenu(RootRbtnMenu);
 }
