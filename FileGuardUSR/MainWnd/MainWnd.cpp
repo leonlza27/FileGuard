@@ -10,6 +10,9 @@ static double ScreenScale;/*屏幕缩放比*/
 static int LstIndex;
 static HMENU FileOperation;/*主菜单文件选项,需中途修改*/
 
+extern wchar_t filename[1024], objname[1024];
+
+
 
 INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
@@ -40,20 +43,38 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 			}
 			break;
 		case NM_CLICK:
-			if (((LPNMHDR)lParam)->hwndFrom == filelst && ((LPNMITEMACTIVATE)(LPNMHDR)lParam)->iItem == -1) {
+			if (((LPNMHDR)lParam)->hwndFrom == filelst && (LstIndex = ((LPNMITEMACTIVATE)(LPNMHDR)lParam)->iItem) == -1) {
 				EnableMenuItem(FileOperation, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 			}
 			else {
 				EnableMenuItem(FileOperation, ID_DEL, MF_BYCOMMAND | MF_ENABLED);
 			}
 			break;
+
+		case LVN_COLUMNCLICK:
+			OnColumnClick((LPNMLISTVIEW)lParam);
+			break;
+
 		}
 		break;
 
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case ID_ADD:
-			DialogBox(DlgHins, MAKEINTRESOURCE(IDD_ADD), DlgMainWnd, AddOpProc);
+			if (DialogBox(DlgHins, MAKEINTRESOURCE(IDD_ADD), DlgMainWnd, AddOpProc) == Obj_Added) {
+				LVITEM itemNew;
+				itemNew.mask = LVIF_TEXT;
+				itemNew.iItem = 0;
+				itemNew.iSubItem = 0;
+				itemNew.pszText = objname;
+				ListView_InsertItem(filelst, &itemNew);
+				itemNew.iSubItem = 1;
+				itemNew.pszText = filename;
+				ListView_SetItem(filelst, &itemNew);
+				itemNew.iSubItem = 2;
+				itemNew.pszText = (LPWSTR)L"已启用";
+				ListView_SetItem(filelst, &itemNew);
+			}
 			break;
 		}
 		break;
@@ -62,6 +83,7 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = (long)(600 * ScreenScale);
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = (long)(400 * ScreenScale);
 		break;
+
 	}
 	return (INT_PTR)0;
 }
@@ -128,9 +150,52 @@ void RbtnMenu(WPARAM wParam, LPARAM lParam) {
 	DestroyMenu(RootRbtnMenu);
 }
 
+int SortItemFunc(LPARAM lParam1, LPARAM lParam2, LPARAM sortID) {
+	BOOL ascending = *(BOOL*)(sortID);
+	int res = wcscmp((const wchar_t*)lParam1, (const wchar_t*)lParam2);
+	return ascending ? res >= 0 : res <= 0;
+}
+
 void ReSize() {
 	RECT rect;
 	GetWindowRect(DlgMainWnd, &rect);
 	MoveWindow(filelst, 0, 0, rect.right-rect.left, rect.bottom-rect.top, 1);
 }
 
+void OnColumnClick(LPNMLISTVIEW pLVInfo) {
+	static int column = 0;
+	static BOOL ascending = TRUE;
+	if (pLVInfo->iSubItem != column)
+		ascending = TRUE;
+	else
+		ascending = !ascending;
+	column = pLVInfo->iSubItem;
+
+	HWND hlist = pLVInfo->hdr.hwndFrom;
+	int count = ListView_GetItemCount(hlist);
+	if (count < 1) return;
+
+	//allocate strings
+	wchar_t** arr = (wchar_t**)malloc(count * sizeof(wchar_t*));
+	LVITEM lvi = { 0 };
+	lvi.mask = LVIF_PARAM;
+	for (int i = 0; i < count; i++)
+	{
+		//get column string
+		wchar_t buf[100]; //random max buffer size, hopefully it's big enough
+		ListView_GetItemText(hlist, i, column, buf, _countof(buf));
+		arr[i] = _wcsdup(buf);
+
+		//match lParam to the string
+		lvi.lParam = (LPARAM)arr[i];
+		lvi.iItem = i;
+		ListView_SetItem(hlist, &lvi);
+	}
+
+	ListView_SortItems(hlist, SortItemFunc, (LPARAM)&ascending);
+
+	//cleanup
+	for (int i = 0; i < count; i++)
+		free(arr[i]);
+	free(arr);
+}

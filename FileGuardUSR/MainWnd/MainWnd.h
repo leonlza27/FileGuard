@@ -16,4 +16,9 @@ void ReSize();
 //初始化
 void InitDlg();
 
+//右键菜单
 void RbtnMenu(WPARAM wParam, LPARAM lParam);
+
+//列表排序
+int CALLBACK SortItemFunc(LPARAM lParam1, LPARAM lParam2, LPARAM sortID);
+void OnColumnClick(LPNMLISTVIEW pLVInfo);

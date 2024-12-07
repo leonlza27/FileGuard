@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <commctrl.h>
 #include"../resource.h"
+#include<io.h>
 
 //״̬
 enum RetStatus{Obj_Added = 0,Usr_Canceled};

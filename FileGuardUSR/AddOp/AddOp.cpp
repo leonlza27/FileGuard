@@ -3,7 +3,7 @@
 static HWND DlgMainWnd;/*对话框主窗口(句柄)*/
 static HINSTANCE DlgHins;/*对话框实例*/
 
-static wchar_t filename[1024];
+wchar_t filename[1024],objname[1024];
 static HWND objNameStor, objPathStor;//对象名;对象路径
 static HWND s_callback;
 
@@ -33,7 +33,7 @@ INT_PTR AddOpProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 			EndDialog(hDlg, Usr_Canceled);
 			break;
 		case IDOK:
-			check();
+			if(check()==0) EndDialog(hDlg,Obj_Added);
 			break;
 		case IDC_BROWSE:
 			getOpen();
@@ -61,8 +61,16 @@ int check() {
 	GetWindowTextA(objNameStor, strchec, 3);
 	if (strchec[0] == 0) {
 		SetWindowTextA(s_callback, "对象名不能为空");
+		SetFocus(objNameStor);
 		return 1;
 	}
+	GetWindowTextW(objPathStor, filename, 1024);
+	if (_waccess(filename, 0) == -1) {
+		SetWindowTextA(s_callback, "对象路径无效");
+		SetFocus(objPathStor);
+		return 1;
+	}
+	GetWindowTextW(objNameStor, objname, 1024);
 	return 0;
 }
 
@@ -71,12 +79,12 @@ void getOpen() {
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = DlgMainWnd;
 	ofn.lpstrFilter = L"所有文件(*.*)\0";
-	ofn.lpstrInitialDir = L"C:\\";
+	ofn.lpstrInitialDir = L"C:";
 	ofn.lpstrFile = filename;
 	ofn.nMaxFile = 1024;
 	ofn.nFilterIndex = 0;
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER;
-	if (GetOpenFileName(&ofn)) {
+	if (GetOpenFileNameW(&ofn)) {
 		SetWindowTextW(objPathStor, filename);
 	}
 }
