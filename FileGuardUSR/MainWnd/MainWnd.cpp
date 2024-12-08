@@ -8,7 +8,9 @@ static HINSTANCE DlgHins;/*对话框实例*/
 
 static double ScreenScale;/*屏幕缩放比*/
 static int LstIndex;
-static HMENU FileOperation;/*主菜单文件选项,需中途修改*/
+static HMENU FileOperation[2];/*主菜单选项,需中途修改*/
+
+static int isChoosenItemEnabled;
 
 extern wchar_t filename[1024], objname[1024];
 
@@ -44,11 +46,25 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 			break;
 		case NM_CLICK:
 			if (((LPNMHDR)lParam)->hwndFrom == filelst && (LstIndex = ((LPNMITEMACTIVATE)(LPNMHDR)lParam)->iItem) == -1) {
-				EnableMenuItem(FileOperation, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+				EnableMenuItem(FileOperation[0], ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+				ModifyMenuW(FileOperation[1], ID_USEDOP, MF_BYCOMMAND | MF_STRING | MF_DISABLED | MF_GRAYED, ID_USEDOP, L"启用防护");
+				EnableMenuItem(FileOperation[1], ID_USEDOP, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 			}
 			else {
-				EnableMenuItem(FileOperation, ID_DEL, MF_BYCOMMAND | MF_ENABLED);
+				EnableMenuItem(FileOperation[0], ID_DEL, MF_BYCOMMAND | MF_ENABLED);
+				static wchar_t itemstatus[4];
+				ListView_GetItemText(filelst, LstIndex,2,itemstatus,4);
+				if (wcscmp(itemstatus, L"已启用") == 0) {
+					ModifyMenuW(FileOperation[1], ID_USEDOP, MF_BYCOMMAND | MF_STRING | MF_ENABLED, ID_USEDOP, L"关闭防护");
+					isChoosenItemEnabled = 1;
+				}
+				else {
+					ModifyMenuW(FileOperation[1], ID_USEDOP, MF_BYCOMMAND | MF_STRING | MF_ENABLED, ID_USEDOP, L"启用防护");
+					isChoosenItemEnabled = 0;
+				}
+
 			}
+
 			break;
 
 		case LVN_COLUMNCLICK:
@@ -74,6 +90,23 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 				itemNew.iSubItem = 2;
 				itemNew.pszText = (LPWSTR)L"已启用";
 				ListView_SetItem(filelst, &itemNew);
+
+				
+			}
+			break;
+
+		case ID_DEL:
+			ListView_DeleteItem(filelst, LstIndex);
+			break;
+
+		case ID_USEDOP:
+			if (isChoosenItemEnabled) { 
+				ListView_SetItemText(filelst, LstIndex, 2, (LPWSTR)L"未启用");
+				isChoosenItemEnabled = 0;
+			}
+			else {
+				ListView_SetItemText(filelst, LstIndex, 2, (LPWSTR)L"已启用");
+				isChoosenItemEnabled = 1;
 			}
 			break;
 		}
@@ -95,8 +128,10 @@ void InitDlg() {
 
 	//主菜单初始化
 	HMENU RootMainMenu = LoadMenuW(DlgHins, MAKEINTRESOURCE(IDR_MENU_MAIN));
-	FileOperation = GetSubMenu(RootMainMenu, 0);
-	EnableMenuItem(FileOperation, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	FileOperation[0] = GetSubMenu(RootMainMenu, 0);
+	FileOperation[1] = GetSubMenu(RootMainMenu, 1);
+	EnableMenuItem(FileOperation[0], ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	EnableMenuItem(FileOperation[1], ID_USEDOP, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 	SetMenu(DlgMainWnd, RootMainMenu);
 
 	//绑定控件
@@ -131,19 +166,28 @@ void InitDlg() {
 
 	// 获取显示器的缩放比例
 	ScreenScale = (double)GetDeviceCaps(hDC, LOGPIXELSX) / 96.0f;
-
 	ReleaseDC(hWnd, hDC);
 }
 
 void RbtnMenu(WPARAM wParam, LPARAM lParam) {
 	HMENU RootRbtnMenu = LoadMenuW(DlgHins, MAKEINTRESOURCE(IDR_MENU_RBTN));
 	HMENU OpMenu = GetSubMenu(RootRbtnMenu, 0);
-
+	static wchar_t itemstatus[4];
 	POINT pnt;
 	GetCursorPos(&pnt);
 
-	//filelst
-	if (LstIndex == -1) EnableMenuItem(OpMenu, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	ListView_GetItemText(filelst, LstIndex, 2, itemstatus, 4);
+
+	if (LstIndex == -1) {
+		EnableMenuItem(OpMenu, ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+		EnableMenuItem(OpMenu, ID_USEDOP, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	}
+	else if (isChoosenItemEnabled) {
+		ModifyMenuW(OpMenu, ID_USEDOP, MF_BYCOMMAND | MF_STRING | MF_ENABLED, ID_USEDOP, L"关闭防护");
+	}
+	else {
+		ModifyMenuW(OpMenu, ID_USEDOP, MF_BYCOMMAND | MF_STRING | MF_ENABLED, ID_USEDOP, L"启用防护");
+	}
 
 	TrackPopupMenu(OpMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, pnt.x, pnt.y, 0, DlgMainWnd, NULL);
 
