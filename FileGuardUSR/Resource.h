@@ -12,7 +12,7 @@
 #define IDC_OBJPATH                     1004
 #define IDC_BROWSE                      1005
 #define IDC_STATUS_CALLBACK             1006
-#define IDC_SCROLLBAR1                  1007
+#define IDC_LIST1                       1010
 #define ID_ADD                          40001
 #define ID_DEL                          40002
 #define ID_REFRESH_TGTREE               40003
@@ -22,9 +22,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        110
+#define _APS_NEXT_RESOURCE_VALUE        111
 #define _APS_NEXT_COMMAND_VALUE         40011
-#define _APS_NEXT_CONTROL_VALUE         1009
+#define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

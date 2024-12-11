@@ -9,3 +9,5 @@
 #define NUL_CASE_BRANCH_RESPONCE
 #define CUT_NPASS
 #endif
+
+void switch_cut() {}

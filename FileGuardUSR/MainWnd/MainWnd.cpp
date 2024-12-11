@@ -1,7 +1,6 @@
 #include "MainWnd.h"
 #include "../DBG.h"
 
-
 static HWND filelst;/*对象列表(表头:对象名 / 路径 / 状态)*/
 static HWND DlgMainWnd;/*对话框主窗口(句柄)*/
 static HINSTANCE DlgHins;/*对话框实例*/
@@ -12,16 +11,19 @@ static HMENU FileOperation[2];/*主菜单选项,需中途修改*/
 
 static int isChoosenItemEnabled;
 
+static RECT ClientRect, FileLst_DataPart;
+
 extern wchar_t filename[1024], objname[1024];
 
 
-
 INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+	static HDC hdc;
 	switch (message) {
 	case WM_INITDIALOG:
 		DlgMainWnd = hDlg;
 		DlgHins = GetModuleHandleW(0);
 		InitDlg();
+		UpdateWindow(filelst);
 		break;
 
 	case WM_CLOSE:
@@ -30,6 +32,8 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	case WM_SIZE:
+		ClientRect.right = LOWORD(lParam);
+		ClientRect.bottom = HIWORD(lParam);
 		ReSize();
 		break;
 
@@ -53,7 +57,7 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 			else {
 				EnableMenuItem(FileOperation[0], ID_DEL, MF_BYCOMMAND | MF_ENABLED);
 				static wchar_t itemstatus[4];
-				ListView_GetItemText(filelst, LstIndex,2,itemstatus,4);
+				ListView_GetItemText(filelst, LstIndex, 2, itemstatus, 4);
 				if (wcscmp(itemstatus, L"已启用") == 0) {
 					ModifyMenuW(FileOperation[1], ID_USEDOP, MF_BYCOMMAND | MF_STRING | MF_ENABLED, ID_USEDOP, L"关闭防护");
 					isChoosenItemEnabled = 1;
@@ -70,7 +74,6 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 		case LVN_COLUMNCLICK:
 			OnColumnClick((LPNMLISTVIEW)lParam);
 			break;
-
 		}
 		break;
 
@@ -90,8 +93,6 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 				itemNew.iSubItem = 2;
 				itemNew.pszText = (LPWSTR)L"已启用";
 				ListView_SetItem(filelst, &itemNew);
-
-				
 			}
 			break;
 
@@ -100,7 +101,7 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 			break;
 
 		case ID_USEDOP:
-			if (isChoosenItemEnabled) { 
+			if (isChoosenItemEnabled) {
 				ListView_SetItemText(filelst, LstIndex, 2, (LPWSTR)L"未启用");
 				isChoosenItemEnabled = 0;
 			}
@@ -118,6 +119,7 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	}
+	
 	return (INT_PTR)0;
 }
 
@@ -136,9 +138,12 @@ void InitDlg() {
 
 	//绑定控件
 	filelst = GetDlgItem(DlgMainWnd, IDC_FILELIST);
+	ListView_SetExtendedListViewStyle(filelst, LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	
+	ListView_SetItemCount(filelst, 100);
 
 	//列表初始化
-	SendMessage(filelst, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, ListView_GetExtendedListViewStyle(filelst) | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	SendMessage(filelst, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 
 	LVCOLUMN lvCol = { 0 };
 	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM;
@@ -159,6 +164,15 @@ void InitDlg() {
 	lvCol.pszText = (LPWSTR)L"防护状态";
 	SendMessage(filelst, LVM_INSERTCOLUMN, 2, (LPARAM)&lvCol);
 
+	LVITEM itemNew;
+	itemNew.mask = LVIF_TEXT;
+	itemNew.iItem = 0;
+	itemNew.iSubItem = 0;
+	itemNew.pszText = (LPWSTR)L"21";
+	ListView_InsertItem(filelst, &itemNew);
+
+	for(int i =0; i<100 ; i++) ListView_InsertItem(filelst, &itemNew);
+
 	//获取缩放比
 
 	HWND hWnd = GetDesktopWindow();
@@ -167,6 +181,7 @@ void InitDlg() {
 	// 获取显示器的缩放比例
 	ScreenScale = (double)GetDeviceCaps(hDC, LOGPIXELSX) / 96.0f;
 	ReleaseDC(hWnd, hDC);
+
 }
 
 void RbtnMenu(WPARAM wParam, LPARAM lParam) {
@@ -203,7 +218,7 @@ int SortItemFunc(LPARAM lParam1, LPARAM lParam2, LPARAM sortID) {
 void ReSize() {
 	RECT rect;
 	GetWindowRect(DlgMainWnd, &rect);
-	MoveWindow(filelst, 0, 0, rect.right-rect.left, rect.bottom-rect.top, 1);
+	MoveWindow(filelst, 0, 0, rect.right-rect.left-13*ScreenScale, rect.bottom-rect.top-56*ScreenScale, 1);
 }
 
 void OnColumnClick(LPNMLISTVIEW pLVInfo) {
