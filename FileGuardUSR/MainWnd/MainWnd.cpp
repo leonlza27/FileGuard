@@ -1,5 +1,7 @@
 #include "MainWnd.h"
 #include "../DBG.h"
+#include "ConfGenerate.h"
+#include "KernConn.h"
 
 static HWND filelst;/*对象列表(表头:对象名 / 路径 / 状态)*/
 static HWND DlgMainWnd;/*对话框主窗口(句柄)*/
@@ -23,7 +25,7 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 		DlgMainWnd = hDlg;
 		DlgHins = GetModuleHandleW(0);
 		InitDlg();
-		UpdateWindow(filelst);
+		UpdateWindow(DlgMainWnd);
 		break;
 
 	case WM_CLOSE:
@@ -85,10 +87,10 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 				itemNew.mask = LVIF_TEXT;
 				itemNew.iItem = 0;
 				itemNew.iSubItem = 0;
-				itemNew.pszText = objname;
+				itemNew.pszText = filename;
 				ListView_InsertItem(filelst, &itemNew);
 				itemNew.iSubItem = 1;
-				itemNew.pszText = filename;
+				itemNew.pszText = objname;
 				ListView_SetItem(filelst, &itemNew);
 				itemNew.iSubItem = 2;
 				itemNew.pszText = (LPWSTR)L"已启用";
@@ -109,6 +111,15 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 				ListView_SetItemText(filelst, LstIndex, 2, (LPWSTR)L"已启用");
 				isChoosenItemEnabled = 1;
 			}
+			break;
+
+		
+		case ID_SAVE:
+			GenerateConfigFile(filelst);
+			break;
+		case ID_REFRESH_TGTREE:
+			GenerateConfigFile(filelst);
+			SendReload();
 			break;
 		}
 		break;
@@ -149,30 +160,25 @@ void InitDlg() {
 	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM;
 	lvCol.fmt = LVCFMT_LEFT;
 
-	lvCol.iSubItem = 0;
-	lvCol.cx = 100;
-	lvCol.pszText = (LPWSTR)L"对象名";
-	SendMessage(filelst, LVM_INSERTCOLUMN, 0, (LPARAM)&lvCol);
-
 	lvCol.iSubItem = 1;
 	lvCol.cx = 400;
-	lvCol.pszText = (LPWSTR)L"对象路径";
+	lvCol.pszText = (LPWSTR)L"文件(夹)路径";
+	SendMessage(filelst, LVM_INSERTCOLUMN, 0, (LPARAM)&lvCol);
+
+	lvCol.iSubItem = 0;
+	lvCol.cx = 300;
+	lvCol.pszText = (LPWSTR)L"附加信息";
 	SendMessage(filelst, LVM_INSERTCOLUMN, 1, (LPARAM)&lvCol);
+
 
 	lvCol.iSubItem = 2;
 	lvCol.cx = 100;
 	lvCol.pszText = (LPWSTR)L"防护状态";
 	SendMessage(filelst, LVM_INSERTCOLUMN, 2, (LPARAM)&lvCol);
 
-	LVITEM itemNew;
-	itemNew.mask = LVIF_TEXT;
-	itemNew.iItem = 0;
-	itemNew.iSubItem = 0;
-	itemNew.pszText = (LPWSTR)L"21";
-	ListView_InsertItem(filelst, &itemNew);
+	LoadConfigFile(filelst);
 
-	for(int i =0; i<100 ; i++) ListView_InsertItem(filelst, &itemNew);
-
+	SendMessage(DlgMainWnd, WM_SIZE, 0, 0);
 	//获取缩放比
 
 	HWND hWnd = GetDesktopWindow();
@@ -182,6 +188,7 @@ void InitDlg() {
 	ScreenScale = (double)GetDeviceCaps(hDC, LOGPIXELSX) / 96.0f;
 	ReleaseDC(hWnd, hDC);
 
+	ConnectKernelFlt();
 }
 
 void RbtnMenu(WPARAM wParam, LPARAM lParam) {
@@ -234,18 +241,18 @@ void OnColumnClick(LPNMLISTVIEW pLVInfo) {
 	int count = ListView_GetItemCount(hlist);
 	if (count < 1) return;
 
-	//allocate strings
+	//分配空间
 	wchar_t** arr = (wchar_t**)malloc(count * sizeof(wchar_t*));
 	LVITEM lvi = { 0 };
 	lvi.mask = LVIF_PARAM;
 	for (int i = 0; i < count; i++)
 	{
-		//get column string
-		wchar_t buf[100]; //random max buffer size, hopefully it's big enough
+		//获取列字符串
+		wchar_t buf[1024];
 		ListView_GetItemText(hlist, i, column, buf, _countof(buf));
 		arr[i] = _wcsdup(buf);
 
-		//match lParam to the string
+		//lParam 对应至字符串
 		lvi.lParam = (LPARAM)arr[i];
 		lvi.iItem = i;
 		ListView_SetItem(hlist, &lvi);
@@ -253,7 +260,7 @@ void OnColumnClick(LPNMLISTVIEW pLVInfo) {
 
 	ListView_SortItems(hlist, SortItemFunc, (LPARAM)&ascending);
 
-	//cleanup
+	//清理
 	for (int i = 0; i < count; i++)
 		free(arr[i]);
 	free(arr);

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileGuard", "FileGuard.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileGuardUSR", "..\FileGuardUSR\FileGuardUSR.vcxproj", "{812620F3-44D6-4092-8BE2-F490F316560C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KernConn", "..\FileGuardUSR\_KernConn\KernConn.vcxproj", "{8EB98772-720C-4E77-934E-92875491668D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -35,6 +37,14 @@ Global
 		{812620F3-44D6-4092-8BE2-F490F316560C}.Release|ARM64.Build.0 = Release|x64
 		{812620F3-44D6-4092-8BE2-F490F316560C}.Release|x64.ActiveCfg = Release|x64
 		{812620F3-44D6-4092-8BE2-F490F316560C}.Release|x64.Build.0 = Release|x64
+		{8EB98772-720C-4E77-934E-92875491668D}.Debug|ARM64.ActiveCfg = Debug|x64
+		{8EB98772-720C-4E77-934E-92875491668D}.Debug|ARM64.Build.0 = Debug|x64
+		{8EB98772-720C-4E77-934E-92875491668D}.Debug|x64.ActiveCfg = Debug|x64
+		{8EB98772-720C-4E77-934E-92875491668D}.Debug|x64.Build.0 = Debug|x64
+		{8EB98772-720C-4E77-934E-92875491668D}.Release|ARM64.ActiveCfg = Release|x64
+		{8EB98772-720C-4E77-934E-92875491668D}.Release|ARM64.Build.0 = Release|x64
+		{8EB98772-720C-4E77-934E-92875491668D}.Release|x64.ActiveCfg = Release|x64
+		{8EB98772-720C-4E77-934E-92875491668D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -57,16 +57,9 @@ INT_PTR AddOpProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 }
 
 int check() {
-	char strchec[3];
-	GetWindowTextA(objNameStor, strchec, 3);
-	if (strchec[0] == 0) {
-		SetWindowTextA(s_callback, "对象名不能为空");
-		SetFocus(objNameStor);
-		return 1;
-	}
 	GetWindowTextW(objPathStor, filename, 1024);
 	if (_waccess(filename, 0) == -1) {
-		SetWindowTextA(s_callback, "对象路径无效");
+		SetWindowTextA(s_callback, "文件(夹)路径无效");
 		SetFocus(objPathStor);
 		return 1;
 	}

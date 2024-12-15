@@ -24,6 +24,9 @@
     <ClCompile Include="AddOp\AddOp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MainWnd\ConfGenerate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowBoot.h">
@@ -39,6 +42,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="AddOp\AddOp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainWnd\ConfGenerate.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

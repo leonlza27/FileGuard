@@ -2,6 +2,7 @@
 #include"DBG.h"
 
 #include"TgStorage/strtree.h"
+#include"FltProc\FltOperation.h"
 
 extern StrTree* FgTgStorage;
 
@@ -37,7 +38,7 @@ PFLT_PORT pgServer = 0;
 
 NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 	NTSTATUS status = STATUS_SUCCESS;
-	KdBreakPoint();
+	//KdBreakPoint();
 	DbgProc(DbgPrint("[SysMiniFlt1] Filter load\n"));
 
 
@@ -47,11 +48,11 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 		return status;
 	}
 
-	status = FltStartFiltering(pg_Filter);
-	if (!NT_SUCCESS(status)) {
-		DbgProc(DbgPrint("[SysMiniFlt1] Failed to start\n"));
-		return status;
-	}
+	FgTgStorage = initStrTree();
+	if(RefreshTgTree()) return STATUS_UNSUCCESSFUL;
+
+
+	//创建通讯端口
 
 	OBJECT_ATTRIBUTES ObjAttr = { 0 };
 	PSECURITY_DESCRIPTOR pSercurity = 0;
@@ -72,15 +73,13 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 		return status;
 	}
 
-
+	status = FltStartFiltering(pg_Filter);
+	if (!NT_SUCCESS(status)) {
+		DbgProc(DbgPrint("[SysMiniFlt1] Failed to start\n"));
+		return status;
+	}
 
 	DbgProc(DbgPrint("[SysMiniFlt1] Load succeed\n"));
-
-#ifdef DBG
-	
-	FgTgStorage = initStrTree();
-	AddString(FgTgStorage, "C:\\Users\\leonl\\Desktop\\Recv");
-#endif
 
 	return status;
 }

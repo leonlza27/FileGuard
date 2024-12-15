@@ -12,18 +12,18 @@
 #define IDC_OBJPATH                     1004
 #define IDC_BROWSE                      1005
 #define IDC_STATUS_CALLBACK             1006
-#define IDC_LIST1                       1010
 #define ID_ADD                          40001
 #define ID_DEL                          40002
 #define ID_REFRESH_TGTREE               40003
 #define ID_USEDOP                       40004
+#define ID_SAVE                         40005
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        111
-#define _APS_NEXT_COMMAND_VALUE         40011
+#define _APS_NEXT_COMMAND_VALUE         40013
 #define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
