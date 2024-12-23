@@ -33,37 +33,34 @@ void ClearAll(ChrNode* node) {
 StrTree* initStrTree() {
     StrTree* TreeNew = ExAllocatePool(PagedPool, sizeof(ChrNode));
     TreeNew->head = initChrNode();
-    TreeNew->cur = TreeNew->head;
     return TreeNew;
 }
 
 void AddString(StrTree* tree, const char* str) {
-    tree->cur = tree->head;
+    ChrNode *tmp = tree->head;
     for (size_t i = 0; str[i] != 0; i++) {
         char mid = (str[i] & 0xF0) >> 4;
-        if (tree->cur->nodenext[mid] == 0)
-            AddItem(tree->cur, mid);
-        tree->cur = tree->cur->nodenext[mid];
+        if (tmp->nodenext[mid] == 0)
+            AddItem(tmp, mid);
+        tmp = tmp->nodenext[mid];
         mid = str[i] & 0xF;
-        if (tree->cur->nodenext[mid] == 0)
-            AddItem(tree->cur, mid);
-        tree->cur = tree->cur->nodenext[mid];
+        if (tmp->nodenext[mid] == 0)
+            AddItem(tmp, mid);
+        tmp = tmp->nodenext[mid];
     }
 }
 
 int HaveStrOrSubStr(StrTree* tree, const char* str) {
-    tree->cur = tree->head;
+    ChrNode* tmp = tree->head;
     for (size_t i = 0; str[i] != 0 && str[0] != 0; i++) {
         char mid = (str[i] & 0xF0) >> 4;
-        if (!HaveItem(tree->cur, mid)) break;
-        tree->cur = tree->cur->nodenext[mid];
+        if (!HaveItem(tmp, mid)) break;
+        tmp = tmp->nodenext[mid];
         mid = str[i] & 0xF;
-        if (!HaveItem(tree->cur, mid)) break;
-        tree->cur = tree->cur->nodenext[mid];
+        if (!HaveItem(tmp, mid)) break;
+        tmp = tmp->nodenext[mid];
     }
-    ChrNode* stor = tree->cur;
-    tree->cur = tree->head;
-    return stor->end;
+    return tmp->end;
 }
 
 void freeStrTree(StrTree* tree) {

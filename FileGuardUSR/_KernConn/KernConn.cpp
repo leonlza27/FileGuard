@@ -5,7 +5,7 @@ HANDLE FilterPort;
 char returnval;
 
 __declspec(dllexport) int ConnectKernelFlt() {
-	if (FilterConnectCommunicationPort(L"\\FileGuard", 0, 0, 0, 0, &FilterPort)!=0) {
+	if (FilterConnectCommunicationPort(L"\\FileGuard_Port", 0, 0, 0, 0, &FilterPort)!=0) {
 		return 1;
 	}
 	return 0;

@@ -49,8 +49,11 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 	}
 
 	FgTgStorage = initStrTree();
-	if(RefreshTgTree()) return STATUS_UNSUCCESSFUL;
-
+	if (!NT_SUCCESS(status = RefreshTgTree())) {
+		DbgProc(DbgPrint("[SysMiniFlt1] Failed to read file\n"));
+		FltUnregisterFilter(pg_Filter);
+		return status;
+	}
 
 	//创建通讯端口
 
@@ -60,6 +63,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 	status = FltBuildDefaultSecurityDescriptor(&pSercurity, FLT_PORT_ALL_ACCESS);
 	if (!NT_SUCCESS(status)) {
 		DbgProc(DbgPrint("[SysMiniFlt1] Failed to open build security desriptor\n"));
+		FltUnregisterFilter(pg_Filter);
 		return status;
 	}
 	InitializeObjectAttributes(&ObjAttr, &CommPortName, OBJ_KERNEL_HANDLE | OBJ_CASE_INSENSITIVE, 0, pSercurity);
@@ -76,8 +80,10 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegPath) {
 	status = FltStartFiltering(pg_Filter);
 	if (!NT_SUCCESS(status)) {
 		DbgProc(DbgPrint("[SysMiniFlt1] Failed to start\n"));
+		FltUnregisterFilter(pg_Filter);
 		return status;
 	}
+
 
 	DbgProc(DbgPrint("[SysMiniFlt1] Load succeed\n"));
 

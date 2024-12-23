@@ -6,9 +6,9 @@
 
 #define FILEHEADER_CONFIRM(fheader) ((fheader).idPara[0] == 0xC232D64D1E48872F && (fheader).idPara[1] == 0x9FAE12F34CFD747F)
 
-#define CONFPATH L"\\\\??\\\\C:\\Windows\\INF\\CONF.fgconf"
+#define CONFPATH L"\\??\\C:\\Windows\\INF\\CONF.fgconf"
 
-#pragma pack(1)
+
 typedef struct FileHeader {
 	unsigned __int64 idPara[2];
 	unsigned int ItemCount;
@@ -39,4 +39,4 @@ FLT_POSTOP_CALLBACK_STATUS PostFltDirCtl(PFLT_CALLBACK_DATA pData, PCFLT_RELATED
 
 
 //更新目录索引树
-int RefreshTgTree();
+NTSTATUS RefreshTgTree();

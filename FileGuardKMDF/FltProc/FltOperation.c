@@ -52,13 +52,15 @@ FLT_PREOP_CALLBACK_STATUS PreFltCreate(PFLT_CALLBACK_DATA pData, PCFLT_RELATED_O
 	RtlInitEmptyUnicodeString(&DosFilePath, pathbuf, sizeof(pathbuf));
 	PDEVICE_OBJECT pDiskObj;
 
+
 	pProc = FltGetRequestorProcess(pData);
 	ProcName = PsGetProcessImageFileName(pProc);
+	//KdBreakPoint();
 	if (strcmp("FileGuardUSR.exe", ProcName) == 0) {
 		return FLT_POSTOP_FINISHED_PROCESSING;
 	}
 
-	status = FltGetFileNameInformation(pData, FLT_FILE_NAME_NORMALIZED | FLT_FILE_NAME_QUERY_FILESYSTEM_ONLY, &pFileInfo);
+	status = FltGetFileNameInformation(pData, FLT_FILE_NAME_NORMALIZED | FLT_FILE_NAME_QUERY_DEFAULT, &pFileInfo);
 	if (!NT_SUCCESS(status)) {
 		return FLT_POSTOP_FINISHED_PROCESSING;
 	}
@@ -109,39 +111,46 @@ FLT_POSTOP_CALLBACK_STATUS PostFltCreate(PFLT_CALLBACK_DATA pData, PCFLT_RELATED
 FLT_POSTOP_CALLBACK_STATUS PostFltDirCtl(PFLT_CALLBACK_DATA pData, PCFLT_RELATED_OBJECTS pFltObj, PVOID CompletionContext, FLT_POST_OPERATION_FLAGS Flags) {
 	return FLT_POSTOP_FINISHED_PROCESSING;
 }
-
-int RefreshTgTree() {
+NTSTATUS RefreshTgTree() {
+	NTSTATUS status;
 	HANDLE ConfFile;
 	OBJECT_ATTRIBUTES oaConfName;
 	IO_STATUS_BLOCK iosBlock;
-	size_t fileOffset = 0;
 	UNICODE_STRING OP_ConfFilePath = RTL_CONSTANT_STRING(CONFPATH);
 	InitializeObjectAttributes(&oaConfName, &OP_ConfFilePath, OBJ_CASE_INSENSITIVE | OBJ_KERNEL_HANDLE, 0, 0);
-	if (!NT_SUCCESS(ZwOpenFile(&ConfFile, FILE_READ_DATA, &oaConfName, &iosBlock, FILE_SHARE_READ, FILE_NON_DIRECTORY_FILE | FILE_SYNCHRONOUS_IO_NONALERT))) {
-		return 1;
+	if (!NT_SUCCESS(status = ZwOpenFile(&ConfFile, FILE_READ_DATA, &oaConfName, &iosBlock, FILE_SHARE_READ, FILE_NON_DIRECTORY_FILE | FILE_SYNCHRONOUS_IO_NONALERT))) {
+		return status;
 	}
 	
 	__int64 byteOffset = sizeof(FileHeader);
 
 	FileHeader OpenedHeader;
-	ZwReadFile(ConfFile, 0, 0, 0, &iosBlock, &OpenedHeader, sizeof(FileHeader), 0, 0);
+	if (!NT_SUCCESS(status = ZwReadFile(ConfFile, 0, 0, 0, &iosBlock, &OpenedHeader, sizeof(FileHeader), 0, 0))) return status;
 	if (!FILEHEADER_CONFIRM(OpenedHeader)) {
 		ZwClose(ConfFile);
-		return 1;
+		return STATUS_UNSUCCESSFUL+1;
 	}
 
 	AllowFliting = 0;
-	ClearAll(FgTgStorage->head);
+	freeStrTree(FgTgStorage);
+	FgTgStorage = initStrTree();
+	AddString(FgTgStorage, "123");
 	TgItemInfo infomid;
 
+	char pathansi[2050];
+
 	for (unsigned int i = 0; i < OpenedHeader.ItemCount; i++) {
-		ZwReadFile(ConfFile, 0, 0, 0, &iosBlock, &infomid, sizeof(TgItemInfo), byteOffset, 0);
-		if(infomid.IsSettedProtect) AddString(FgTgStorage, infomid.Path);
+		KdBreakPoint();
+		status = ZwReadFile(ConfFile, 0, 0, 0, &iosBlock, &infomid, sizeof(TgItemInfo), &byteOffset, 0);
+		if (!NT_SUCCESS(status)) 
+			return status;
+		sprintf(pathansi, "%ls", infomid.Path);
+		if(infomid.IsSettedProtect) AddString(FgTgStorage, pathansi);
 		byteOffset += sizeof(TgItemInfo);
 	}
 
 
 	AllowFliting = 1;
 	ZwClose(ConfFile);
-	return 0;
+	return STATUS_SUCCESS;
 }

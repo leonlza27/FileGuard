@@ -17,7 +17,6 @@ typedef struct _ChrNode {
 
 typedef struct _StrTree {
 	ChrNode *head;
-	ChrNode *cur;
 } StrTree;
 
 //struct StrTree

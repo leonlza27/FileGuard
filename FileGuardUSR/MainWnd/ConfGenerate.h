@@ -9,7 +9,7 @@
 #define FILEHEADER_SETUP(pfheader) {(pfheader)->idPara[0] = 0xC232D64D1E48872F;(pfheader)->idPara[1] = 0x9FAE12F34CFD747F; }
 #define FILEHEADER_CONFIRM(fheader) ((fheader).idPara[0] == 0xC232D64D1E48872F && (fheader).idPara[1] == 0x9FAE12F34CFD747F)
 
-#pragma pack(1)
+
 typedef struct FileHeader {
 	unsigned __int64 idPara[2];
 	unsigned int ItemCount;
