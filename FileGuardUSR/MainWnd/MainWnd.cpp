@@ -10,10 +10,13 @@ static HINSTANCE DlgHins;/*对话框实例*/
 static double ScreenScale;/*屏幕缩放比*/
 static int LstIndex;
 static HMENU FileOperation[2];/*主菜单选项,需中途修改*/
+static HMENU drvStatus;
 
 static int isChoosenItemEnabled;
 
 static RECT ClientRect, FileLst_DataPart;
+
+static HANDLE statusCheck;
 
 extern wchar_t filename[1024], objname[1024];
 
@@ -23,6 +26,9 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_INITDIALOG:
 		DlgMainWnd = hDlg;
+		if (AppProcRegCtl(DlgMainWnd)) {
+			EndDialog(DlgMainWnd, 0);
+		}
 		DlgHins = GetModuleHandleW(0);
 		InitDlg();
 		UpdateWindow(DlgMainWnd);
@@ -31,6 +37,10 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 	case WM_CLOSE:
 		EndDialog(hDlg, LOWORD(wParam));
 		return (INT_PTR)0;
+		if (statusCheck) TerminateThread(statusCheck, 0);
+		unloadDrvService();
+		SendReload();
+		DisconnectKernelFlt();
 		break;
 
 	case WM_SIZE:
@@ -113,6 +123,14 @@ INT_PTR MainWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 			}
 			break;
 
+		case ID_SrvCtrl:
+			if (getDrvServiceStatus() == Running) {
+				stopDRV();
+			}
+			else {
+				startDRV();
+			}
+
 		
 		case ID_SAVE:
 			GenerateConfigFile(filelst);
@@ -143,6 +161,7 @@ void InitDlg() {
 	HMENU RootMainMenu = LoadMenuW(DlgHins, MAKEINTRESOURCE(IDR_MENU_MAIN));
 	FileOperation[0] = GetSubMenu(RootMainMenu, 0);
 	FileOperation[1] = GetSubMenu(RootMainMenu, 1);
+	drvStatus = GetSubMenu(FileOperation[1], 4);
 	EnableMenuItem(FileOperation[0], ID_DEL, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 	EnableMenuItem(FileOperation[1], ID_USEDOP, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 	SetMenu(DlgMainWnd, RootMainMenu);
@@ -189,6 +208,17 @@ void InitDlg() {
 	ReleaseDC(hWnd, hDC);
 
 	ConnectKernelFlt();
+
+	if (loadDrvService()) {
+		statusCheck = CreateThread(0, 0, CheckDDKStatus, 0, 0, 0);
+	}
+	else {
+		statusCheck = 0;
+		ModifyMenuW(drvStatus, ID_SrvStatus, MF_BYCOMMAND | MF_STRING | MF_DISABLED | MF_GRAYED, ID_SrvStatus, L"状态:服务未安装");
+		ModifyMenuW(drvStatus, ID_SrvCtrl, MF_BYCOMMAND | MF_STRING | MF_DISABLED | MF_GRAYED, ID_SrvCtrl, L"启用/停止服务");
+	}
+
+	
 }
 
 void RbtnMenu(WPARAM wParam, LPARAM lParam) {
@@ -264,4 +294,22 @@ void OnColumnClick(LPNMLISTVIEW pLVInfo) {
 	for (int i = 0; i < count; i++)
 		free(arr[i]);
 	free(arr);
+}
+
+DWORD CheckDDKStatus(void* para){
+	while (1) {
+		switch (getDrvServiceStatus()) {
+		case Running:
+			ModifyMenuW(drvStatus, ID_SrvStatus, MF_BYCOMMAND | MF_STRING | MF_DISABLED | MF_GRAYED, ID_SrvStatus, L"状态:正在运行");
+			break;
+		case Paused:
+			ModifyMenuW(drvStatus, ID_SrvStatus, MF_BYCOMMAND | MF_STRING | MF_DISABLED | MF_GRAYED, ID_SrvStatus, L"状态:已挂起");
+			break;
+		case Closed:
+			ModifyMenuW(drvStatus, ID_SrvStatus, MF_BYCOMMAND | MF_STRING | MF_DISABLED | MF_GRAYED, ID_SrvStatus, L"状态:未启动");
+			break;
+		}
+		Sleep(100);
+	}
+	return 0;
 }

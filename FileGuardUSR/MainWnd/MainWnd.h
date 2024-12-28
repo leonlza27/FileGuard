@@ -22,3 +22,6 @@ void RbtnMenu(WPARAM wParam, LPARAM lParam);
 //¡–±Ì≈≈–Ú
 int CALLBACK SortItemFunc(LPARAM lParam1, LPARAM lParam2, LPARAM sortID);
 void OnColumnClick(LPNMLISTVIEW pLVInfo);
+
+
+DWORD CheckDDKStatus(void* para);

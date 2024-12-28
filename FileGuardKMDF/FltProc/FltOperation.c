@@ -140,7 +140,7 @@ NTSTATUS RefreshTgTree() {
 	char pathansi[2050];
 
 	for (unsigned int i = 0; i < OpenedHeader.ItemCount; i++) {
-		KdBreakPoint();
+	
 		status = ZwReadFile(ConfFile, 0, 0, 0, &iosBlock, &infomid, sizeof(TgItemInfo), &byteOffset, 0);
 		if (!NT_SUCCESS(status)) 
 			return status;

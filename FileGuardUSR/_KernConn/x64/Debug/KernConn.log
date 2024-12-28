@@ -1,0 +1,6 @@
+﻿D:\MSVC\VisualStudio_MAIN\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8004: Output 目录未以斜杠结尾。  此生成实例将添加斜杠，因为必须有这个斜杠才能正确计算 Output 目录。
+  KernConn.cpp
+D:\ccpp_proj\Drivers\FileGuard\FileGuardUSR\_KernConn\KernConn.cpp(74,1): warning C4715: “getDrvServiceStatus”: 不是所有的控件路径都返回值
+  LINK : 没有找到 ..\KernConn.dll 或上一个增量链接没有生成它；正在执行完全链接
+    正在创建库 ..\KernConn.lib 和对象 ..\KernConn.exp
+  KernConn.vcxproj -> D:\ccpp_proj\Drivers\FileGuard\FileGuardUSR\KernConn.dll

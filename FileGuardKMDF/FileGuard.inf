@@ -32,7 +32,7 @@ Description=%ServiceDescription%
 ServiceBinary=%12%\%DriverName%.sys
 Dependencies="FltMgr"
 ServiceType=2
-StartType=3
+StartType=0
 ErrorControl=1
 LoadOrderGroup="FileGuard"
 AddReg=FileGuard.AddRegistry
@@ -55,8 +55,8 @@ HKR,"Instances\"%Instance1.Name%,"Flags",0x00010001,%Instance1.Flags%
 [Strings]
 ManufacturerName="LZA123"
 DriverName="FileGuard"
-ServiceName="FileGuard1"
-ServiceDescription="FileGuard Guarding Service"
+ServiceName="FileGuard"
+ServiceDescription="File lock and protect service"
 DiskId1="FileGuard Installation Disk"
 
 Instance1.Name="FileGuard instance"
